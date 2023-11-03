@@ -4,15 +4,20 @@ import '../api/api_classification.dart';
 import '../model/fake_classification_model.dart';
 
 class ClassificationProvider extends ChangeNotifier {
-  ClassificationResult? _classificationResult;
+  Classification? _classificationResult;
 
-  ClassificationResult? get classificationResult => _classificationResult;
-  bool isLoading = true;
+  Classification? get classificationResult => _classificationResult;
+  bool? isLoading ;
 
-  Future<void>  classifyText(String text) async {
+  void setLoading (){
+    isLoading = true;
+    notifyListeners();
+  }
+
+  Future<void> classifyText(String text) async {
     try {
       _classificationResult = await Api.classifyText(text);
-      isLoading=false;
+      isLoading = false;
     } on Exception catch (e) {
       print(e);
     }

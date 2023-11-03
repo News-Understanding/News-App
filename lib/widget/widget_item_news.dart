@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../model/article_details.dart';
 import '../page/home/home_page.dart';
 
 class WidgetItemNews extends StatelessWidget {
@@ -65,48 +66,60 @@ class WidgetItemNews extends StatelessWidget {
                   Expanded(
                     child: Text(
                       itemArticle.title,
-                      maxLines: 2,
+                      maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 16.sp,
                       ),
                     ),
                   ),
-                  itemArticle.author == null
-                      ? Container()
-                      : Text(
-                          itemArticle.author,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14.sp,
-                          ),
-                        ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                  Wrap(
+                    spacing: 8.0, // gap between adjacent chips
+                    runSpacing: 4.0, // gap between lines
                     children: <Widget>[
-                      Text(
-                        strPublishedAt,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12.sp,
+                      Chip(
+                        label: Text(itemArticle.sentiment),
+                        avatar: CircleAvatar(
+                          backgroundColor: Colors.green.shade800,
+                          child: Text('S'),
                         ),
                       ),
-                      Text(
-                        ' | ',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12.sp,
-                        ),
-                      ),
-                      Text(
-                        itemArticle.source.name,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12.sp,
+                      Chip(
+                        label: Text(itemArticle.bais),
+                        avatar: CircleAvatar(
+                          backgroundColor: Colors.blue.shade800,
+                          child: Text('B'),
                         ),
                       ),
                     ],
                   ),
+                  // itemArticle.author == null
+                  //     ? Container()
+                  //     : Text(
+                  //         itemArticle.author,
+                  //         style: TextStyle(
+                  //           color: Colors.grey,
+                  //           fontSize: 14.sp,
+                  //         ),
+                  //       ),
+                  //
+                  // Row(
+                  //   crossAxisAlignment: CrossAxisAlignment.end,
+                  //   children: <Widget>[
+                  //     Text(
+                  //       strPublishedAt,
+                  //       style: TextStyle(color: Colors.grey, fontSize: 12.sp),
+                  //     ),
+                  //     Text(
+                  //       ' | ',
+                  //       style: TextStyle(color: Colors.grey, fontSize: 12.sp),
+                  //     ),
+                  //     Text(
+                  //       itemArticle.source.name,
+                  //       style: TextStyle(color: Colors.grey, fontSize: 12.sp),
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
             ),

@@ -4,7 +4,7 @@ import 'dart:convert';
 import '../model/fake_classification_model.dart';
 
 class Api {
-  static Future<ClassificationResult> classifyText(String text) async {
+  static Future<Classification> classifyText(String text) async {
     var dio = Dio();
 
     try {
@@ -14,12 +14,9 @@ class Api {
           'text': text,
         }),
       );
+      Classification classification = Classification.fromJson(response.data);
 
-      if (response.statusCode == 200) {
-        return ClassificationResult.fromJson(jsonDecode(response.data));
-      } else {
-        throw Exception('Failed to classify text.');
-      }
+      return classification;
     } catch (e) {
       throw Exception('Failed to classify text: $e');
     }

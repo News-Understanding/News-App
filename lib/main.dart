@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news_understanding/controller/text_controller.dart';
+import 'package:news_understanding/page/home/home_page.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'app_module.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,7 @@ void main() async {
   // Save the TensorFlow Lite model.
   // await tfliteModel.saveToFile('tflite_model.tflite');
   await ScreenUtil.ensureScreenSize();
-  runApp(ModularApp(module: AppModule(), child: const AppWidget()));
+  runApp( const AppWidget());
 }
 
 class AppWidget extends StatelessWidget {
@@ -25,12 +25,18 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        title: 'My Smart App',
-        theme: ThemeData(primarySwatch: Colors.grey),
-        routerConfig: Modular.routerConfig,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ClassificationProvider>(create: (context) => ClassificationProvider(),),
+        ChangeNotifierProvider<TextProvider>(create: (context) => TextProvider(),),
+      ],
+      child: ScreenUtilInit(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'My Smart App',
+          theme: ThemeData(primarySwatch: Colors.grey),
+           home: HomePage(),
+        ),
       ),
     ); //added by extension
   }

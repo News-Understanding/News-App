@@ -1,9 +1,6 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-
 
 import '../../model/article_details.dart';
 import '../../shared/string_manager.dart';
@@ -23,28 +20,6 @@ class TopHeadlinesNewsResponseModel {
   });
 }
 
-class ItemArticleTopHeadlinesNewsResponseModel {
-  final ItemSourceTopHeadlinesNewsResponseModel source;
-  final String author;
-  final String title;
-  final String description;
-  final String url;
-  final String urlToImage;
-  final String publishedAt;
-  final String content;
-
-  ItemArticleTopHeadlinesNewsResponseModel({
-    required this.source,
-    required this.author,
-    required this.title,
-    required this.description,
-    required this.url,
-    required this.urlToImage,
-    required this.publishedAt,
-    required this.content,
-  });
-}
-
 
 
 class HomePage extends StatefulWidget {
@@ -53,7 +28,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   final refreshIndicatorState = GlobalKey<RefreshIndicatorState>();
 
   var indexCategorySelected = 0;
@@ -91,9 +65,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-
                         SizedBox(width: 20.w),
-                     AddNewsIcon()
+                        AddNewsIcon()
                       ],
                     ),
                   ),
@@ -127,11 +100,11 @@ class _HomePageState extends State<HomePage> {
                 .parse(itemArticle.publishedAt, true);
             var strPublishedAt =
                 DateFormat('MMM dd, yyyy HH:mm').format(dateTimePublishedAt);
-            if (index == 0) {
-              return _buildWidgetItemLatestNews(itemArticle, strPublishedAt);
-            } else {
-              return _buildWidgetItemNews(index, itemArticle, strPublishedAt);
-            }
+            // if (index == 0) {
+            //   return _buildWidgetItemLatestNews(itemArticle, strPublishedAt);
+            // } else {
+            return _buildWidgetItemNews(index, itemArticle, strPublishedAt);
+            // }
           },
           itemCount: listArticles.length,
         ),
@@ -179,10 +152,7 @@ class _HomePageState extends State<HomePage> {
     String strPublishedAt,
   ) {
     return Padding(
-      padding: EdgeInsets.only(
-        top: 8,
-        bottom: 8,
-      ),
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: WidgetItemNews(
         itemArticle: itemArticle,
         strPublishedAt: strPublishedAt,

@@ -1,12 +1,19 @@
+class Classification {
+  final String fake;
+  final String topic;
+  final String sentiment;
 
-class ClassificationResult {
-  final String result;
+  Classification({
+    required this.fake,
+    required this.sentiment,
+    required this.topic,
+  });
 
-  ClassificationResult({required this.result});
-
-  factory ClassificationResult.fromJson(Map<String, dynamic> json) {
-    return ClassificationResult(
-      result: json['result'],
+  factory Classification.fromJson(Map<String, dynamic> json) {
+    return Classification(
+      fake: json['fake'],
+      sentiment: json['sentiment'],
+      topic: json['topic'],
     );
   }
 }
