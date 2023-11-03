@@ -102,12 +102,21 @@ class _AddNewsState extends State<AddNews> {
                       height: 20,
                     ),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(padding: EdgeInsets.all(12.sp),
+                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.sp)
+
+                     ),
+                        backgroundColor: Colors.grey.shade400
+
+                      ),
                       onPressed: () async {
                         clfProvider.setLoading();
                         await clfProvider.classifyText(
                             textProvider.textEditingController.text);
                       },
-                      child: const Text(StringManager.publish),
+                      child: const Text(StringManager.publish,
+
+                      ),
                     ),
                     if (clfProvider.isLoading != null)
                       Column(
@@ -124,10 +133,10 @@ class _AddNewsState extends State<AddNews> {
                             ),
                           if (!clfProvider.isLoading!)
                             Container(
-                              height: 150,
+                              height: 200,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
-                                color: Colors.grey,
+                                color: Colors.blueGrey.shade200,
                               ),
                               padding: EdgeInsets.all(8.sp),
                               child: Row(
@@ -139,7 +148,7 @@ class _AddNewsState extends State<AddNews> {
                                       child: Pie(clfProvider: clfProvider),
                                     ),
                                   ),
-                                  Indicators(),
+                                  const Indicators(),
                                 ],
                               ),
                             )
@@ -166,64 +175,72 @@ class Pie extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PieChart(
-      PieChartData(
-          sectionsSpace: 2,
-          sections: [
-            PieChartSectionData(
-              title: "Un-bias",
-              color: Color(0xff30D5cf),
-              titleStyle: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  shadows: [
-                    BoxShadow(
-                        color: Colors.black)
-                  ]),
-            ),
-            PieChartSectionData(
-              title: clfProvider
-                  .classificationResult
-                  ?.topic,
-              color: Color(0xff2E69E0),
-              titleStyle: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  shadows: [
-                    BoxShadow(
-                        color: Colors.black)
-                  ]),
-            ),
-            PieChartSectionData(
-              title: clfProvider
-                  .classificationResult
-                  ?.sentiment,
-              color: Color(0xff309FDB),
-              titleStyle: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  shadows: [
-                    BoxShadow(
-                        color: Colors.black)
-                  ]),
-            ),
-            PieChartSectionData(
-              color: Color(0xff30Dbf1),
-              titleStyle: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  shadows: [
-                    BoxShadow(
-                        color: Colors.black)
-                  ]),
-              title: clfProvider
-                  .classificationResult?.fake,
-            ),
-          ]),
-      swapAnimationDuration:
-          const Duration(milliseconds: 150),
-      // Optional
-      swapAnimationCurve: Curves.linear,
+    return Column(
+      children: [
+        Expanded(
+          child: PieChart(
+            PieChartData(
+                pieTouchData: PieTouchData(enabled: true ),
+                sectionsSpace: 2, sections: [
+              PieChartSectionData(
+                title: "Un-bias",
+                // color: clfProvider.classificationResult?.=="fake"?Colors.red:Colors.green,
+                titleStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    shadows: [BoxShadow(color: Colors.black)]),
+              ),
+              // PieChartSectionData(
+              //   title: clfProvider.classificationResult?.topic,
+              //   color: const Color(0xff2E69E0),
+              //   titleStyle: const TextStyle(
+              //       color: Colors.white,
+              //       fontWeight: FontWeight.bold,
+              //       shadows: [
+              //         BoxShadow(
+              //           color: Colors.black,
+              //         )
+              //       ]),
+              // ),
+              PieChartSectionData(
+                title: clfProvider.classificationResult?.sentiment,
+                color: clfProvider.classificationResult?.sentiment == "Positive"
+                    ? Colors.green
+                    : clfProvider.classificationResult?.sentiment == "Negative"
+                        ? Colors.red
+                        : Colors.blue,
+                titleStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    shadows: [BoxShadow(color: Colors.black)]),
+              ),
+              PieChartSectionData(
+                color: clfProvider.classificationResult?.fake == "fake"
+                    ? Colors.red
+                    : Colors.green,
+                titleStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    shadows: [BoxShadow(color: Colors.black)]),
+                title: clfProvider.classificationResult?.fake,
+              ),
+            ]),
+            swapAnimationDuration: const Duration(milliseconds: 150),
+            // Optional
+            swapAnimationCurve: Curves.linear,
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          clfProvider.classificationResult!.topic,
+          style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
+        )
+      ],
     );
   }
 }
@@ -236,35 +253,38 @@ class Indicators extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment:
-          CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Indicator(
-          color:Color(0xff30Dbf1),
-          text: 'Fake classification',
+          color1: Colors.red,
+          color2: Colors.green,
+          text: 'Fake/Real',
           isSquare: true,
         ),
         SizedBox(height: 4),
         Indicator(
-          color:Color(0xff309FDB),
-          text: 'Sentiment classification',
+          color1: Colors.red,
+          color2: Colors.green,
+          text: 'Sentiment',
           isSquare: true,
         ),
+        // SizedBox(
+        //   height: 4,
+        // ),
+        // Indicator(
+        //   color1: Colors.red,
+        //   color2: Colors.green,
+        //   text: 'Topic',
+        //   isSquare: true,
+        // ),
         SizedBox(
           height: 4,
         ),
         Indicator(
-          color: Color(0xff2E69E0),
-          text: 'Topics classification',
-          isSquare: true,
-        ),
-        SizedBox(
-          height: 4,
-        ),
-        Indicator(
-          color: Color(0xff30D5cf),
-          text: 'Bias classification',
+          color1: Colors.red,
+          color2: Colors.green,
+          text: 'Bias/Un-Bias',
           isSquare: true,
         ),
         SizedBox(

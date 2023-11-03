@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:news_understanding/controller/text_controller.dart';
 import 'package:news_understanding/page/home/home_page.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
@@ -17,7 +18,7 @@ void main() async {
   // Save the TensorFlow Lite model.
   // await tfliteModel.saveToFile('tflite_model.tflite');
   await ScreenUtil.ensureScreenSize();
-  runApp( const AppWidget());
+  runApp(const AppWidget());
 }
 
 class AppWidget extends StatelessWidget {
@@ -27,15 +28,25 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<ClassificationProvider>(create: (context) => ClassificationProvider(),),
-        ChangeNotifierProvider<TextProvider>(create: (context) => TextProvider(),),
+        ChangeNotifierProvider<ClassificationProvider>(
+          create: (context) => ClassificationProvider(),
+        ),
+        ChangeNotifierProvider<TextProvider>(
+          create: (context) => TextProvider(),
+        ),
       ],
       child: ScreenUtilInit(
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'My Smart App',
-          theme: ThemeData(primarySwatch: Colors.grey),
-           home: HomePage(),
+          theme: ThemeData(
+            primarySwatch: Colors.grey,
+              // allertaTextTheme
+            textTheme: GoogleFonts.alikeTextTheme(
+              Theme.of(context).textTheme,
+            ),
+          ),
+          home: HomePage(),
         ),
       ),
     ); //added by extension

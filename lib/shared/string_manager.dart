@@ -4,7 +4,7 @@ class StringManager {
   static const latestNews = 'Latest News';
   static const enterYourTitle ='Enter your title';
   static const enterYourNew ='Enter your news';
-  static const publish ='Publish';
+  static const publish ='Classify';
   static const noDetails ='Couldn\'t open detail news';
 
   StringManager._();
