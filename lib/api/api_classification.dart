@@ -21,4 +21,21 @@ class Api {
       throw Exception('Failed to classify text: $e');
     }
   }
+  static Future<String> summarizeText(String text) async {
+    var dio = Dio();
+
+    try {
+      var response = await dio.post(
+        'http://192.168.70.10:5000/summarize',
+        data: jsonEncode(<String, String>{
+          'text': text,
+        }),
+      );
+
+
+      return response.data.toString();
+    } catch (e) {
+      throw Exception('Failed to classify text: $e');
+    }
+  }
 }

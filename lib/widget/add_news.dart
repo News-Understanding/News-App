@@ -1,6 +1,8 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:news_understanding/controller/classification_controller.dart';
 import 'package:news_understanding/controller/text_controller.dart';
@@ -38,6 +40,7 @@ class AddNews extends StatefulWidget {
 }
 
 class _AddNewsState extends State<AddNews> {
+  bool isSummarized = false;
   @override
   Widget build(BuildContext context) {
     final textProvider = context.watch<TextProvider>();
@@ -62,29 +65,38 @@ class _AddNewsState extends State<AddNews> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        TextField(
-                          controller: textProvider.titleController,
-                          maxLines: 2,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(16.sp),
-                            prefixIcon: const Icon(Icons.title),
-                            hintText: StringManager.enterYourTitle,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0.sp),
-                            ),
-                            filled: true,
-                            // Fill the background with a color
-                            fillColor: Colors.grey[200], // Background color
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        // TextField(
+                        //   controller: textProvider.titleController,
+                        //   maxLines: 2,
+                        //   decoration: InputDecoration(
+                        //     contentPadding: EdgeInsets.all(16.sp),
+                        //     prefixIcon: const Icon(Icons.title),
+                        //     hintText: StringManager.enterYourTitle,
+                        //     border: OutlineInputBorder(
+                        //       borderRadius: BorderRadius.circular(10.0.sp),
+                        //     ),
+                        //     filled: true,
+                        //     // Fill the background with a color
+                        //     fillColor: Colors.grey[200], // Background color
+                        //   ),
+                        // ),
+                        // const SizedBox(
+                        //   height: 10,
+                        // ),
                         TextField(
                           controller: textProvider.textEditingController,
-                          maxLines: 7,
+                          maxLines: 8,
+                          onChanged: (value) {
+                            setState(() {
+
+                            });
+                          },
+
                           decoration: InputDecoration(
+                            labelText: StringManager.newsArticle,
+                            labelStyle: TextStyle(color: Colors.black),
                             contentPadding: EdgeInsets.all(16.sp),
                             prefixIcon: const Icon(Icons.newspaper),
                             hintText: StringManager.enterYourNew,
@@ -92,32 +104,24 @@ class _AddNewsState extends State<AddNews> {
                               borderRadius: BorderRadius.circular(10.0.sp),
                             ),
                             filled: true,
-                            // Fill the background with a color
                             fillColor: Colors.grey[200], // Background color
                           ),
                         ),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        NumberWord(
+                          number: textProvider.textEditingController.text.trimRight()
+                              .split(" ")
+                              .length,
+                        )
                       ],
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(padding: EdgeInsets.all(12.sp),
-                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.sp)
-
-                     ),
-                        backgroundColor: Colors.grey.shade400
-
-                      ),
-                      onPressed: () async {
-                        clfProvider.setLoading();
-                        await clfProvider.classifyText(
-                            textProvider.textEditingController.text);
-                      },
-                      child: const Text(StringManager.publish,
-
-                      ),
-                    ),
+                    ButtonsPost(
+                        clfProvider: clfProvider, textProvider: textProvider),
                     if (clfProvider.isLoading != null)
                       Column(
                         mainAxisSize: MainAxisSize.min,
@@ -151,7 +155,68 @@ class _AddNewsState extends State<AddNews> {
                                   const Indicators(),
                                 ],
                               ),
-                            )
+                            ),
+                        ],
+                      ),
+                    SizedBox(height: 10.sp),
+                    if (clfProvider.isLoadingSummarize != null)
+                      Column(
+                        children: [
+                          if (clfProvider.isLoadingSummarize!)
+                            Lottie.asset(
+                              "assets/lottie/load2.json",
+                              width: 150,
+                              fit: BoxFit.contain,
+                            ),
+                          if (!clfProvider.isLoadingSummarize!)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Container(
+                                  height: 150,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.blueGrey.shade200,
+                                  ),
+                                  padding: EdgeInsets.all(8.sp),
+                                  child: SingleChildScrollView(
+                                    child: DefaultTextStyle(
+                                      style: GoogleFonts.openSans(
+                                        color: Colors.black,
+                                        fontSize: 18.0,
+                                      ),
+                                      child: AnimatedTextKit(
+                                        onTap: () {
+                                          setState(() {
+                                            isSummarized =true;
+                                          });
+                                        },
+                                        onFinished: () {
+                                          setState(() {
+                                            isSummarized =true;
+                                          });
+                                        },
+                                        isRepeatingAnimation: false,
+                                        displayFullTextOnTap: true,
+                                        animatedTexts: [
+                                          TypewriterAnimatedText(
+                                              clfProvider.summarized ?? ""),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 6,
+                                ),
+                                if(isSummarized)
+                                NumberWord(
+                                  number:
+                                      clfProvider.summarized!.split(" ").length,
+                                )
+                              ],
+                            ),
                         ],
                       ),
                   ],
@@ -161,6 +226,60 @@ class _AddNewsState extends State<AddNews> {
           )),
         ],
       ),
+    );
+  }
+}
+
+class ButtonsPost extends StatelessWidget {
+  const ButtonsPost({
+    super.key,
+    required this.clfProvider,
+    required this.textProvider,
+  });
+
+  final ClassificationProvider clfProvider;
+  final TextProvider textProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.all(12.sp),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.sp)),
+              backgroundColor: Colors.grey.shade400),
+          onPressed: () async {
+            clfProvider.setLoading();
+            await clfProvider.classifyText(
+              textProvider.textEditingController.text,
+            );
+          },
+          child: const Text(
+            StringManager.publish,
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.all(12.sp),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.sp)),
+              backgroundColor: Colors.grey.shade400),
+          onPressed: () async {
+            clfProvider.setSummarizeLoading();
+            await clfProvider
+                .summarizeText(textProvider.textEditingController.text);
+          },
+          child: const Text(
+            StringManager.summarize,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -180,57 +299,63 @@ class Pie extends StatelessWidget {
         Expanded(
           child: PieChart(
             PieChartData(
-                pieTouchData: PieTouchData(enabled: true ),
-                sectionsSpace: 2, sections: [
-              PieChartSectionData(
-                title: "Un-bias",
-                // color: clfProvider.classificationResult?.=="fake"?Colors.red:Colors.green,
-                titleStyle: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    shadows: [BoxShadow(color: Colors.black)]),
-              ),
-              // PieChartSectionData(
-              //   title: clfProvider.classificationResult?.topic,
-              //   color: const Color(0xff2E69E0),
-              //   titleStyle: const TextStyle(
-              //       color: Colors.white,
-              //       fontWeight: FontWeight.bold,
-              //       shadows: [
-              //         BoxShadow(
-              //           color: Colors.black,
-              //         )
-              //       ]),
-              // ),
-              PieChartSectionData(
-                title: clfProvider.classificationResult?.sentiment,
-                color: clfProvider.classificationResult?.sentiment == "Positive"
-                    ? Colors.green
-                    : clfProvider.classificationResult?.sentiment == "Negative"
+                pieTouchData: PieTouchData(enabled: true),
+
+                sectionsSpace: 2,
+                sections: [
+                  PieChartSectionData(
+                    title: clfProvider.classificationResult?.bias ?? "Un-Biased",
+                    color: clfProvider.classificationResult?.bias == "Biased"
                         ? Colors.red
-                        : Colors.blue,
-                titleStyle: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    shadows: [BoxShadow(color: Colors.black)]),
-              ),
-              PieChartSectionData(
-                color: clfProvider.classificationResult?.fake == "fake"
-                    ? Colors.red
-                    : Colors.green,
-                titleStyle: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    shadows: [BoxShadow(color: Colors.black)]),
-                title: clfProvider.classificationResult?.fake,
-              ),
-            ]),
+                        : Colors.green,
+                    titleStyle: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        shadows: [BoxShadow(color: Colors.black)]),
+                  ),
+                  // PieChartSectionData(
+                  //   title: clfProvider.classificationResult?.topic,
+                  //   color: const Color(0xff2E69E0),
+                  //   titleStyle: const TextStyle(
+                  //       color: Colors.white,
+                  //       fontWeight: FontWeight.bold,
+                  //       shadows: [
+                  //         BoxShadow(
+                  //           color: Colors.black,
+                  //         )
+                  //       ]),
+                  // ),
+                  PieChartSectionData(
+                    title: clfProvider.classificationResult?.sentiment,
+                    color: clfProvider.classificationResult?.sentiment ==
+                            "Positive"
+                        ? Colors.green
+                        : clfProvider.classificationResult?.sentiment ==
+                                "Negative"
+                            ? Colors.red
+                            : Colors.blue,
+                    titleStyle: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        shadows: [BoxShadow(color: Colors.black)]),
+                  ),
+                  PieChartSectionData(
+                    color: clfProvider.classificationResult?.fake == "fake"
+                        ? Colors.red
+                        : Colors.green,
+                    titleStyle: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        shadows: [BoxShadow(color: Colors.black)]),
+                    title: clfProvider.classificationResult?.fake,
+                  ),
+                ]),
             swapAnimationDuration: const Duration(milliseconds: 150),
             // Optional
             swapAnimationCurve: Curves.linear,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Text(
@@ -292,5 +417,23 @@ class Indicators extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class NumberWord extends StatelessWidget {
+  final int number;
+
+  const NumberWord({super.key, this.number = 0});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Text(
+      "$number Words",
+      style: const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w600,
+      ),
+    ));
   }
 }
