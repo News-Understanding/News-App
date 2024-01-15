@@ -3,8 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_understanding/controller/text_controller.dart';
 import 'package:news_understanding/page/home/home_page.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
-import 'app_module.dart';
 import 'package:provider/provider.dart';
 
 import 'controller/classification_controller.dart';

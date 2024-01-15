@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -21,7 +22,7 @@ class AddNewsIcon extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddNews(),
+              builder: (context) => const AddNews(),
             ));
       },
       child: Icon(
@@ -41,190 +42,224 @@ class AddNews extends StatefulWidget {
 
 class _AddNewsState extends State<AddNews> {
   bool isSummarized = false;
+
   @override
   Widget build(BuildContext context) {
     final textProvider = context.watch<TextProvider>();
     final clfProvider = context.watch<ClassificationProvider>();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.bottom]);
+
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-              top: 0,
-              bottom: 0,
-              child: Image.asset("assets/images/background2.jpg")),
-          Center(
-              child: Padding(
-            padding: EdgeInsets.all(8.0.w),
-            child: Card(
-              elevation: 10,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              child: Padding(
-                padding: EdgeInsets.all(15.0.sp),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        // TextField(
-                        //   controller: textProvider.titleController,
-                        //   maxLines: 2,
-                        //   decoration: InputDecoration(
-                        //     contentPadding: EdgeInsets.all(16.sp),
-                        //     prefixIcon: const Icon(Icons.title),
-                        //     hintText: StringManager.enterYourTitle,
-                        //     border: OutlineInputBorder(
-                        //       borderRadius: BorderRadius.circular(10.0.sp),
-                        //     ),
-                        //     filled: true,
-                        //     // Fill the background with a color
-                        //     fillColor: Colors.grey[200], // Background color
-                        //   ),
-                        // ),
-                        // const SizedBox(
-                        //   height: 10,
-                        // ),
-                        TextField(
-                          controller: textProvider.textEditingController,
-                          maxLines: 8,
-                          onChanged: (value) {
-                            setState(() {
-
-                            });
-                          },
-
-                          decoration: InputDecoration(
-                            labelText: StringManager.newsArticle,
-                            labelStyle: TextStyle(color: Colors.black),
-                            contentPadding: EdgeInsets.all(16.sp),
-                            prefixIcon: const Icon(Icons.newspaper),
-                            hintText: StringManager.enterYourNew,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0.sp),
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[200], // Background color
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        NumberWord(
-                          number: textProvider.textEditingController.text.trimRight()
-                              .split(" ")
-                              .length,
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ButtonsPost(
-                        clfProvider: clfProvider, textProvider: textProvider),
-                    if (clfProvider.isLoading != null)
+      resizeToAvoidBottomInset: false,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Stack(
+          children: [
+            Positioned(
+                top: 0,
+                bottom: 0,
+                child: Image.asset("assets/images/backround.jpg")),
+            Center(
+                child: Padding(
+              padding: EdgeInsets.all(8.0.w),
+              child: Card(
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                child: Padding(
+                  padding: EdgeInsets.all(15.0.sp),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
                       Column(
-                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          if (clfProvider.isLoading!)
-                            Lottie.asset(
-                              "assets/lottie/load2.json",
-                              width: 150,
-                              fit: BoxFit.contain,
-                            ),
-                          if (!clfProvider.isLoading!)
-                            Container(
-                              height: 200,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: Colors.blueGrey.shade200,
+                          // TextField(
+                          //   controller: textProvider.titleController,
+                          //   maxLines: 2,
+                          //   decoration: InputDecoration(
+                          //     contentPadding: EdgeInsets.all(16.sp),
+                          //     prefixIcon: const Icon(Icons.title),
+                          //     hintText: StringManager.enterYourTitle,
+                          //     border: OutlineInputBorder(
+                          //       borderRadius: BorderRadius.circular(10.0.sp),
+                          //     ),
+                          //     filled: true,
+                          //     // Fill the background with a color
+                          //     fillColor: Colors.grey[200], // Background color
+                          //   ),
+                          // ),
+                          // const SizedBox(
+                          //   height: 10,
+                          // ),
+                          TextField(
+                            controller: textProvider.textEditingController,
+                            maxLines: 8,
+                            onChanged: (value) {
+                              setState(() {});
+                            },
+                            decoration: InputDecoration(
+                              labelText: StringManager.newsArticle,
+                              labelStyle: const TextStyle(color: Colors.black),
+                              contentPadding: EdgeInsets.all(16.sp),
+                              prefixIcon: const Icon(Icons.newspaper),
+                              hintText: StringManager.enterYourNew,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0.sp),
                               ),
-                              padding: EdgeInsets.all(8.sp),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              filled: true,
+                              fillColor: Colors.grey[200], // Background color
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          NumberWord(
+                              number: textProvider.textEditingController.text
+                                      .trimRight()
+                                      .isEmpty
+                                  ? 0
+                                  : textProvider.textEditingController.text
+                                      .trimRight()
+                                      .split(" ")
+                                      .length)
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ButtonsPost(
+                          clfProvider: clfProvider, textProvider: textProvider),
+                      if (clfProvider.isLoading != null)
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            if (clfProvider.isLoading!)
+                              Lottie.asset(
+                                "assets/lottie/load2.json",
+                                width: 150,
+                                fit: BoxFit.contain,
+                              ),
+                            if (!clfProvider.isLoading!)
+                              Container(
+                                height: 150,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: Colors.blueGrey.shade200,
+                                ),
+                                padding: EdgeInsets.all(8.sp),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      clfProvider.classificationResult?.topic ??
+                                          "",
+                                      style: GoogleFonts.openSans(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                      fontSize: 24
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        ClfChip(
+                                          text: clfProvider
+                                                  .classificationResult?.fake ??
+                                              "Fake",
+                                        ),
+                                        ClfChip(
+                                          text: clfProvider
+                                                  .classificationResult?.bias ??
+                                              "Un-Biased",
+                                        ),
+                                        ClfChip(
+                                          text: clfProvider.classificationResult
+                                                  ?.sentiment ??
+                                              "Negative",
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                          ],
+                        ),
+                      SizedBox(height: 10.sp),
+                      if (clfProvider.isLoadingSummarize != null)
+                        Column(
+                          children: [
+                            if (clfProvider.isLoadingSummarize!)
+                              Lottie.asset(
+                                "assets/lottie/load2.json",
+                                width: 150,
+                                fit: BoxFit.contain,
+                              ),
+                            if (!clfProvider.isLoadingSummarize!)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Expanded(
-                                    child: AspectRatio(
-                                      aspectRatio: 1,
-                                      child: Pie(clfProvider: clfProvider),
+                                  Container(
+                                    height: 200,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.blueGrey.shade200,
+                                    ),
+                                    padding: EdgeInsets.all(8.sp),
+                                    child: SingleChildScrollView(
+                                      child: DefaultTextStyle(
+                                        style: GoogleFonts.openSans(
+                                          color: Colors.black,
+                                          fontSize: 18.0,
+                                        ),
+                                        child: AnimatedTextKit(
+                                          onTap: () {
+                                            setState(() {
+                                              isSummarized = true;
+                                            });
+                                          },
+                                          onFinished: () {
+                                            setState(() {
+                                              isSummarized = true;
+                                            });
+                                          },
+                                          isRepeatingAnimation: false,
+                                          displayFullTextOnTap: true,
+                                          animatedTexts: [
+                                            TypewriterAnimatedText(
+                                                clfProvider.summarized ?? ""),
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  const Indicators(),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  if (isSummarized)
+                                    NumberWord(
+                                      number: clfProvider.summarized!
+                                          .split(" ")
+                                          .length,
+                                    )
                                 ],
                               ),
-                            ),
-                        ],
-                      ),
-                    SizedBox(height: 10.sp),
-                    if (clfProvider.isLoadingSummarize != null)
-                      Column(
-                        children: [
-                          if (clfProvider.isLoadingSummarize!)
-                            Lottie.asset(
-                              "assets/lottie/load2.json",
-                              width: 150,
-                              fit: BoxFit.contain,
-                            ),
-                          if (!clfProvider.isLoadingSummarize!)
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Container(
-                                  height: 150,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.blueGrey.shade200,
-                                  ),
-                                  padding: EdgeInsets.all(8.sp),
-                                  child: SingleChildScrollView(
-                                    child: DefaultTextStyle(
-                                      style: GoogleFonts.openSans(
-                                        color: Colors.black,
-                                        fontSize: 18.0,
-                                      ),
-                                      child: AnimatedTextKit(
-                                        onTap: () {
-                                          setState(() {
-                                            isSummarized =true;
-                                          });
-                                        },
-                                        onFinished: () {
-                                          setState(() {
-                                            isSummarized =true;
-                                          });
-                                        },
-                                        isRepeatingAnimation: false,
-                                        displayFullTextOnTap: true,
-                                        animatedTexts: [
-                                          TypewriterAnimatedText(
-                                              clfProvider.summarized ?? ""),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 6,
-                                ),
-                                if(isSummarized)
-                                NumberWord(
-                                  number:
-                                      clfProvider.summarized!.split(" ").length,
-                                )
-                              ],
-                            ),
-                        ],
-                      ),
-                  ],
+                          ],
+                        ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )),
-        ],
+            )),
+          ],
+        ),
       ),
     );
   }
@@ -284,7 +319,7 @@ class ButtonsPost extends StatelessWidget {
   }
 }
 
-class Pie extends StatelessWidget {
+/*class Pie extends StatelessWidget {
   const Pie({
     super.key,
     required this.clfProvider,
@@ -368,9 +403,9 @@ class Pie extends StatelessWidget {
       ],
     );
   }
-}
+}*/
 
-class Indicators extends StatelessWidget {
+/*class Indicators extends StatelessWidget {
   const Indicators({
     super.key,
   });
@@ -418,6 +453,30 @@ class Indicators extends StatelessWidget {
       ],
     );
   }
+}*/
+class ClfChip extends StatelessWidget {
+  final String text;
+
+  const ClfChip({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      alignment: Alignment.center,
+      height: 50,
+      constraints: const BoxConstraints(minWidth: 70),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.black26,
+          border: Border.all(color: Colors.grey, width: 2)),
+      child: Text(text,
+          style: GoogleFonts.openSans(
+            color: Colors.white,
+            fontWeight: FontWeight.w600
+          )),
+    );
+  }
 }
 
 class NumberWord extends StatelessWidget {
@@ -427,13 +486,12 @@ class NumberWord extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Text(
+    return Text(
       "$number Words",
       style: const TextStyle(
         fontSize: 15,
         fontWeight: FontWeight.w600,
       ),
-    ));
+    );
   }
 }

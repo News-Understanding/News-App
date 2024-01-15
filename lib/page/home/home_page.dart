@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
           SafeArea(
             child: Container(
               width: double.infinity,
-              color: Color(0xFFEFF5F5),
+              color: const Color(0xFFEFF5F5),
               padding: EdgeInsets.symmetric(
                 vertical: 12.h,
               ),
@@ -338,7 +338,7 @@ class _WidgetCategoryNewsState extends State<WidgetCategoryNews> {
                         ),
                 ),
                 child: AnimatedContainer(
-                  duration: Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 200),
                   width: 100.w,
                   height: 100.w,
                   decoration: BoxDecoration(
@@ -357,7 +357,7 @@ class _WidgetCategoryNewsState extends State<WidgetCategoryNews> {
                   child: Center(
                     child: Text(
                       itemCategory.title,
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
@@ -372,6 +372,8 @@ class _WidgetCategoryNewsState extends State<WidgetCategoryNews> {
 }
 
 class WidgetDateToday extends StatefulWidget {
+  const WidgetDateToday({super.key});
+
   @override
   _WidgetDateTodayState createState() => _WidgetDateTodayState();
 }
