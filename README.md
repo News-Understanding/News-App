@@ -1,4 +1,5 @@
 # News Understanding App
+<img src="https://raw.githubusercontent.com/News-Understanding/News-App/main/assets/images/logo.jpg" alt="Logo" width="200"/>
 
 
 ## Overview
@@ -35,9 +36,8 @@ Explore a curated feed of news articles, each tagged with pertinent information,
 To establish communication between Flutter and Flask, the app uses the Dio library for making HTTP requests. For more details on the backend implementation, please refer to the [Flask backend repository](link/to/flask_backend_repo).
 
 ## Screenshots
-
-![App Screenshot 1](https://raw.githubusercontent.com/News-Understanding/News-App/main/assets/images/preview_news.jpg)
-![App Screenshot 2](https://raw.githubusercontent.com/News-Understanding/News-App/main/assets/images/check_news_article.png)
+<img src="https://raw.githubusercontent.com/News-Understanding/News-App/main/assets/images/preview_news.jpg" alt="preview" width="295"/>
+<img src="https://raw.githubusercontent.com/News-Understanding/News-App/main/assets/images/check_news_article.png" alt="classify" width="295"/>
 
 ## Getting Started
 
