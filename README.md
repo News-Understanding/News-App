@@ -33,7 +33,7 @@ Explore a curated feed of news articles, each tagged with pertinent information,
 ![Connection](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*O1imEbp9X8X6pzjf7bwfrw.png
 )
 
-To establish communication between Flutter and Flask, the app uses the Dio library for making HTTP requests. For more details on the backend implementation, please refer to the [Flask backend repository](link/to/flask_backend_repo).
+To establish communication between Flutter and Flask, the app uses the Dio library for making HTTP requests. For more details on the backend implementation, please refer to the [Flask backend repository]([link/to/flask_backend_repo](https://github.com/News-Understanding/News-Backend?tab=readme-ov-file#news-understanding-backend)).
 
 ## Screenshots
 <img src="https://raw.githubusercontent.com/News-Understanding/News-App/main/assets/images/preview_news.jpg" alt="preview" width="295"/>
