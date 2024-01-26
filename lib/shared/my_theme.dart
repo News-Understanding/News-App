@@ -10,6 +10,7 @@ class MyTheme {
   );
 
   static final ThemeData darkTheme = ThemeData(
+
     primaryColor: Colors.black,
     hintColor: Colors.red,
     buttonTheme: const ButtonThemeData(

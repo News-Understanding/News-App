@@ -6,6 +6,7 @@ import 'package:news_understanding/page/home/home_page.dart';
 import 'package:provider/provider.dart';
 
 import 'controller/classification_controller.dart';
+import 'controller/home_provider.dart';
 
 void main() async {
   // final model = await Interpreter.fromAsset("assets/pytorch_model.bin");
@@ -31,6 +32,8 @@ class AppWidget extends StatelessWidget {
         ),
         ChangeNotifierProvider<TextProvider>(
           create: (context) => TextProvider(),
+        ),  ChangeNotifierProvider<HomeProvider>(
+          create: (context) => HomeProvider(),
         ),
       ],
       child: ScreenUtilInit(
@@ -38,13 +41,15 @@ class AppWidget extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'My Smart App',
           theme: ThemeData(
-            primarySwatch: Colors.grey,
-              // allertaTextTheme
+            // primarySwatch: Colors.orange,
+            primaryColor: Colors.indigo,
+            focusColor: Colors.indigoAccent,
+
             textTheme: GoogleFonts.alikeTextTheme(
               Theme.of(context).textTheme,
             ),
           ),
-          home: HomePage(),
+          home: const HomePage(),
         ),
       ),
     ); //added by extension

@@ -9,7 +9,7 @@ class Api {
 
     try {
       var response = await dio.post(
-        'https://e74e-41-33-218-54.ngrok-free.app/fake',
+        'http://192.168.1.2:5000/fake',
         data: jsonEncode(<String, String>{
           'text': text,
         }),
@@ -26,7 +26,7 @@ class Api {
 
     try {
       var response = await dio.post(
-        'https://e74e-41-33-218-54.ngrok-free.app/summarize',
+        'http://192.168.1.2:5000/summarize',
         data: jsonEncode(<String, String>{
           'text': text,
         }),

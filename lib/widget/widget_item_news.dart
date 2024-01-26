@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../model/article_details.dart';
+import '../page/article_details.dart';
 import '../page/home/home_page.dart';
 
 class WidgetItemNews extends StatelessWidget {
@@ -19,11 +20,14 @@ class WidgetItemNews extends StatelessWidget {
     ScreenUtil.init(context);
     return GestureDetector(
       onTap: () async {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Couldn\'t open detail news')));
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) {
+            return const ArticleDetails();
+          },
+        ));
       },
       child: SizedBox(
-        height: 100.h,
+        height: 85.h,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -73,26 +77,36 @@ class WidgetItemNews extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Wrap(
-                    spacing: 8.0, // gap between adjacent chips
-                    runSpacing: 4.0, // gap between lines
-                    children: <Widget>[
-                      Chip(
-                        label: Text(itemArticle.sentiment),
-                        avatar: CircleAvatar(
-                          backgroundColor: Colors.green.shade800,
-                          child: Text('S'),
-                        ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Anas Ibrahim",
+                        style: TextStyle(color: Theme.of(context).primaryColor),
                       ),
-                      Chip(
-                        label: Text(itemArticle.bais),
-                        avatar: CircleAvatar(
-                          backgroundColor: Colors.blue.shade800,
-                          child: Text('B'),
-                        ),
-                      ),
+                      Text("1 hr ago"),
                     ],
-                  ),
+                  )
+                  // Wrap(
+                  //   spacing: 8.0, // gap between adjacent chips
+                  //   runSpacing: 4.0, // gap between lines
+                  //   children: <Widget>[
+                  //     Chip(
+                  //       label: Text(itemArticle.sentiment),
+                  //       avatar: CircleAvatar(
+                  //         backgroundColor: Colors.green.shade800,
+                  //         child: Text('S'),
+                  //       ),
+                  //     ),
+                  //     Chip(
+                  //       label: Text(itemArticle.bais),
+                  //       avatar: CircleAvatar(
+                  //         backgroundColor: Colors.blue.shade800,
+                  //         child: Text('B'),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   // itemArticle.author == null
                   //     ? Container()
                   //     : Text(
